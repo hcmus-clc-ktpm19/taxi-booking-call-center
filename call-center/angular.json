@@ -48,9 +48,42 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/css/style.css",
+              "src/assets/fonts/material-design-icons/material-icon.css",
+              "src/assets/fonts/font-awesome/css/font-awesome.min.css",
+              "src/assets/plugins/bootstrap/css/bootstrap.min.css",
+              "src/assets/plugins/summernote/summernote.css",
+              "src/assets/plugins/morris/morris.css",
+              "src/assets/plugins/material/material.min.css",
+              "src/assets/css/material_style.css",
+              "src/assets/css/pages/animate_page.css",
+              "src/assets/css/plugins.min.css",
+              "src/assets/css/responsive.css",
+              "src/assets/css/theme-color.css",
+              "src/assets/plugins/iconic/css/material-design-iconic-font.min.css",
+              "src/assets/css/pages/extra_pages.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/plugins/jquery/jquery.min.js",
+              "src/assets/plugins/popper/popper.min.js",
+              "src/assets/plugins/jquery-blockui/jquery.blockui.min.js",
+              "src/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js",
+              "src/assets/plugins/bootstrap/js/bootstrap.min.js",
+              "src/assets/plugins/sparkline/jquery.sparkline.min.js",
+              "src/assets/js/pages/sparkline/sparkline-data.js",
+              "src/assets/js/app.js",
+              "src/assets/js/layout.js",
+              "src/assets/js/theme-color.js",
+              "src/assets/plugins/material/material.min.js",
+              "src/assets/js/pages/ui/animations.js",
+              "src/assets/plugins/morris/morris.min.js",
+              "src/assets/plugins/morris/raphael-min.js",
+              "src/assets/js/pages/chart/morris/morris_home_data.js",
+              "src/assets/plugins/modernizr/modernizr.min.js",
+              "src/assets/js/pages/map/gmap-home.js",
+              "src/assets/js/pages/extra_pages/login.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -122,5 +155,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "febbb6fd-6b72-46e1-bd4e-67d18c3466b8"
   }
 }
