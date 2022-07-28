@@ -1,0 +1,134 @@
+<div class="page-bar">
+    <div class="page-title-breadcrumb">
+        <div class=" pull-left">
+            <div class="page-title">Booking Request</div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-topline-lightblue">
+            <div class="card-head">
+                <header>Geocoding</header>
+                <div class="tools">
+                    <a class="fa fa-repeat btn-color box-refresh" href="javascript:;"></a>
+                    <a class="t-collapse btn-color fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="t-close btn-color fa fa-times" href="javascript:;"></a>
+                </div>
+            </div>
+            <div class="card-body ">
+                <form class="form-inline mg-bottom-10" action="#">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="gmap_geocoding_address" placeholder="address...">
+                        <span class="input-group-btn">
+                            <button class="btn blue" id="gmap_geocoding_btn">
+                                <i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+                <div id="gmap_geocoding" class="gmaps"> </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-sm-6">
+        <div class="card card-box">
+            <div class="card-head">
+                <header>Customer Information</header>
+                <button id="panel-button7" class="mdl-button mdl-js-button mdl-button--icon pull-right"
+                    data-upgraded=",MaterialButton">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                    data-mdl-for="panel-button7">
+                    <li class="mdl-menu__item"><i class="material-icons">assistant_photo</i>Action
+                    </li>
+                    <li class="mdl-menu__item"><i class="material-icons">print</i>Another action
+                    </li>
+                    <li class="mdl-menu__item"><i class="material-icons">favorite</i>Something else
+                        here</li>
+                </ul>
+            </div>
+            <div class="card-body " id="bar-parent6">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form (ngSubmit)="onSubmit()">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Name" required
+                                    [(ngModel)]="form.name">
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Phone" required
+                                    [(ngModel)]="form.phone">
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="House number" required
+                                    [(ngModel)]="form.houseNo">
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Street" required
+                                    [(ngModel)]="form.street">
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Ward" [(ngModel)]="form.ward">
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="District"
+                                    [(ngModel)]="form.district">
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="City" required
+                                    [(ngModel)]="form.city">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <div class="card card-box">
+            <div class="card-head">
+                <header>Car Information</header>
+                <button id="panel-button7" class="mdl-button mdl-js-button mdl-button--icon pull-right"
+                    data-upgraded=",MaterialButton">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                    data-mdl-for="panel-button7">
+                    <li class="mdl-menu__item"><i class="material-icons">assistant_photo</i>Action
+                    </li>
+                    <li class="mdl-menu__item"><i class="material-icons">print</i>Another action
+                    </li>
+                    <li class="mdl-menu__item"><i class="material-icons">favorite</i>Something else
+                        here</li>
+                </ul>
+            </div>
+            <div class="card-body " id="bar-parent6">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="input-group">
+                            <select class="form-control" required>
+                                <option value="" disabled selected>Select car type</option>
+                                <option value="4">Four-seater</option>
+                                <option value="5">Five-seater</option>
+                                <option value="7">Seven-seater</option>
+                            </select>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Picking address" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

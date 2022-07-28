@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
+import { BookingModule } from './booking/booking.module';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -19,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     SharedModule,
     UserModule,
+    BookingModule,
     HttpClientModule 
   ],
   providers: [],
