@@ -29,6 +29,7 @@ export class SigninComponent implements OnInit {
     this.authService.login(phone, password, role).subscribe(
       data => {
         this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveUser(data);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.router.navigate(['/booking']);

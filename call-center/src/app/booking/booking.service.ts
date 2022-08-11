@@ -4,7 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiService } from '../shared/services/api.service';
 
-const BOOKING_API  = environment.api.url + '/api/v1/callcenter';
+const url = "/car-request/callcenter"
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class BookingService {
     private apiService: ApiService
   ) { }
 
-  postInfo(body: Object = {}): Observable<any> {
-    return this.apiService.post(BOOKING_API + '/booking', body);
+  postInfo(body: any): Observable<any> {
+    return this.apiService.post(`${url}/create-or-update`, body);
   }
 }

@@ -5,7 +5,10 @@ import { Observable ,  throwError } from 'rxjs';
 
 import { catchError } from 'rxjs/operators';
 
-const API_URL = environment.api.url + '/api/v1/callcenter';
+const token = "Bearer "+ window.sessionStorage.getItem('auth-token')
+const headers = new HttpHeaders().set('AUTHORIZATION',token);
+
+const API_URL = environment.api.url + '/api/v1';
 
 @Injectable()
 export class ApiService {
@@ -17,28 +20,30 @@ export class ApiService {
     return  throwError(error.error);
   }
 
-  get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
-    return this.http.get(API_URL + path , { params })
+  get(path: string, params: HttpParams = new HttpParams): Observable<any> {
+    return this.http.get(API_URL + path , { params,  headers })
       .pipe(catchError(this.formatErrors));
   }
 
   put(path: string, body: Object = {}): Observable<any> {
     return this.http.put(
       API_URL + path,
-      JSON.stringify(body)
+      JSON.stringify(body),
+      { headers }
     ).pipe(catchError(this.formatErrors));
   }
 
   post(path: string, body: Object = {}): Observable<any> {
     return this.http.post(
       API_URL + path,
-      JSON.stringify(body)
+      body,
+      { headers }
     ).pipe(catchError(this.formatErrors));
   }
 
   delete(path: string, params: HttpParams = new HttpParams()): Observable<any> {
     return this.http.delete(
-      API_URL + path, {params}
+      API_URL + path, { params, headers }
     ).pipe(catchError(this.formatErrors));
   }
 }

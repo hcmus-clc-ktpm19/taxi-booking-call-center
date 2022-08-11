@@ -1,0 +1,10 @@
+.map-container{
+    position: relative;
+}
+ .map-frame {
+    height: 400px;
+ }
+
+ #map{  
+    height: 400px;
+ }

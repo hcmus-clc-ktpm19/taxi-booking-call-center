@@ -1,10 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
+
 
 
 import { BookingRoutingModule } from './booking-routing.module';
 import { HomeComponent } from './home/home.component';
+
+import { ApiService } from '../shared/services/api.service';
+import { TokenStorageService } from '../user/token-storage.service';
+import { UserService } from '../user/user.service';
+import { NominatimService } from './nominatim-service';
+import { StompService } from './stomp.service';
 
 
 @NgModule({
@@ -14,7 +23,19 @@ import { HomeComponent } from './home/home.component';
   imports: [
     CommonModule,
     BookingRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBS6lGj7CsMDE5O9bMEf3I3anmfn34OBlA',
+    })
+
+  ],
+  providers: [
+    ApiService,
+    TokenStorageService,
+    UserService,
+    NominatimService,
+    StompService
   ]
 })
 export class BookingModule { }

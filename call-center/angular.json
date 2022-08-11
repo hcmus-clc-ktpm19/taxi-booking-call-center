@@ -48,6 +48,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/leaflet/dist/leaflet.css",
               "src/styles.css",
               "src/assets/css/style.css",
               "src/assets/fonts/material-design-icons/material-icon.css",
@@ -62,7 +63,9 @@
               "src/assets/css/responsive.css",
               "src/assets/css/theme-color.css",
               "src/assets/plugins/iconic/css/material-design-iconic-font.min.css",
-              "src/assets/css/pages/extra_pages.css"
+              "src/assets/css/pages/extra_pages.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "src/assets/plugins/datatables/plugins/bootstrap/dataTables.bootstrap4.min.css"
             ],
             "scripts": [
               "src/assets/plugins/jquery/jquery.min.js",
@@ -81,8 +84,10 @@
               "src/assets/plugins/morris/raphael-min.js",
               "src/assets/js/pages/chart/morris/morris_home_data.js",
               "src/assets/plugins/modernizr/modernizr.min.js",
-              "src/assets/js/pages/map/gmap-home.js",
-              "src/assets/js/pages/extra_pages/login.js"
+              "src/assets/js/pages/extra_pages/login.js",
+              "src/assets/plugins/datatables/jquery.dataTables.min.js",
+              "src/assets/plugins/datatables/plugins/bootstrap/dataTables.bootstrap4.min.js",
+              "src/assets/js/pages/table/table_data.js"
             ]
           },
           "configurations": {
