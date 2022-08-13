@@ -72,19 +72,27 @@
                 </div>
             </div>
             <div class="card-body ">
-                <form class="form-inline mg-bottom-10" name="formSearch" [formGroup]="searchForm" (ngSubmit)="addressLookup()">
+                <form class="form-inline mg-bottom-10" name="formSearch" [formGroup]="searchForm"
+                    (ngSubmit)="addressLookup()">
                     <div class="input-group" style="width: 100%">
-                        <input type="text" class="form-control" id="gmap_geocoding_address" placeholder="Address..." name="key"
-                        formControlName="key" required>
+                        <input type="text" class="form-control" id="gmap_geocoding_address" placeholder="Address..."
+                            name="key" formControlName="key" required>
                         <span class="input-group-btn">
                             <button class="btn blue" id="gmap_geocoding_btn" [disabled]="searchForm.invalid">
                                 <i class="fa fa-search"></i></button>
                         </span>
                     </div>
                 </form>
-                <div class="map-container">
-                    <div class="map-frame">
-                        <div id="map"></div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-3">
+                        <header class="panel-heading panel-heading-red" style="text-align: center;">Search Result</header>
+                    </div>
+                    <div class="col-md-9 col-sm-9">
+                        <div class="map-container">
+                            <div class="map-frame">
+                                <div id="map"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,36 +114,62 @@
                 <section class="example-container mat-elevation-z8" tabindex="0">
                     <table mat-table [dataSource]="dataSource">
                         <!-- Id Column -->
-                      <ng-container matColumnDef="id">
-                        <th mat-header-cell *matHeaderCellDef>ID </th>
-                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-                      </ng-container>
-                  
-                      <!-- Name Column -->
-                      <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef> Customer Name </th>
-                        <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
-                      </ng-container>
-                  
-                      <!-- Phone Column -->
-                      <ng-container matColumnDef="phone">
-                        <th mat-header-cell *matHeaderCellDef> Customer Phone </th>
-                        <td mat-cell *matCellDef="let element"> {{element.customerPhone}} </td>
-                      </ng-container>
-                  
-                      <!-- Address Column -->
-                      <ng-container matColumnDef="address">
-                        <th mat-header-cell *matHeaderCellDef> Picking Address </th>
-                        <td mat-cell *matCellDef="let element"> {{element.pickingAddress}} </td>
-                      </ng-container>
-                  
-                      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef>ID </th>
+                            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> Customer Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
+                        </ng-container>
+
+                        <!-- Phone Column -->
+                        <ng-container matColumnDef="phone">
+                            <th mat-header-cell *matHeaderCellDef> Customer Phone </th>
+                            <td mat-cell *matCellDef="let element"> {{element.customerPhone}} </td>
+                        </ng-container>
+
+                        <!-- Address Column -->
+                        <ng-container matColumnDef="address">
+                            <th mat-header-cell *matHeaderCellDef> Picking Address </th>
+                            <td mat-cell *matCellDef="let element"> {{element.pickingAddress}} </td>
+                        </ng-container>
+
+                        <!-- Action Column -->
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef> Action </th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- <button  (click)="locateRequest(element.id)" [disabled]="isLocating(element.id)"  class="btn btn-primary"
+                                    style="background-color: #e91e63 !important;">Locate</button> -->
+                                    <div class="btn-group">
+                                        <button [disabled]="isLocating(element.id)"
+                                            class="btn btn-xs deepPink-bgcolor dropdown-toggle no-margin"
+                                            type="button" data-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                            <!-- <i class="fa fa-angle-down"></i> -->
+                                        </button>
+                                        <ul class="dropdown-menu pull-left" role="menu">
+                                            <li (click)="locateRequest(element.id)">
+                                                <a href="javascript:;" >
+                                                    <i class="icon-docs" ></i> Locate </a>
+                                            </li>
+                                            <li (click)="cancelLocateRequest()">
+                                                <a href="javascript:;">
+                                                    <i class="icon-tag"></i> Cancel </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
-                  </section>
-                  
+                </section>
+
             </div>
         </div>
     </div>
 </div>
-

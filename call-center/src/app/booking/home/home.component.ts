@@ -22,13 +22,14 @@ export class HomeComponent implements OnInit {
   searchForm: FormGroup;
   callCenterID: any;
   errorMessage: string;
-  wsData: Object;
+  currentRequest = null;
   dataSource: carRequest[] = [];
   displayedColumns = [
     'id',
     'name',
     'phone',
     'address',
+    'action'
   ];
   private map: L.Map;
   private centroid: L.LatLngExpression = [10.762050, 106.681830];
@@ -87,13 +88,37 @@ export class HomeComponent implements OnInit {
       const marker = new L.Marker([result.latitude, result.longitude])
         .setIcon(
           L.icon({
-            iconSize: [25, 41],
+            iconSize: [25, 38],
             iconAnchor: [13, 41],
             iconUrl: 'assets/img/marker-icon.png'
           }));
       marker.addTo(this.map);
     });
   }
+
+  locateRequest(id: any){
+    this.currentRequest = id;
+    // this.bookingService.locateRequest(id).subscribe({
+    //   complete: () => {
+    //     alert("Locating car successfully !!");
+    //     console.log("Locating car successfully !!");
+    //   },
+    //   error: err => {
+    //     this.errorMessage = err.error.message;
+    //     alert("Something went wrong!!");
+    //     console.log(err);
+    //   }
+    // });
+  }
+
+  cancelLocateRequest(){
+    this.currentRequest = null;
+  }
+
+  isLocating(id: any): boolean {
+      return this.currentRequest !== id && this.currentRequest !== null;
+  }
+
 
 
   getCallCenterID() {
@@ -134,6 +159,7 @@ export class HomeComponent implements OnInit {
       },
       error: err => {
         this.errorMessage = err.error.message;
+        alert("Something went wrong!!");
         console.log(err);
       }
     });

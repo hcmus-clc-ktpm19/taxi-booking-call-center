@@ -46,5 +46,23 @@ td.mat-cell {
 
 .mat-header-cell,
 .mat-cell {
-   padding-left: 16px;
+   padding-left: 16px !important;
+}
+
+.mat-column-id {
+   width: 250px;
+}
+
+.mat-column-name {
+   width: 200px;
+}
+
+.mat-column-phone {
+   width: 150px;
+}
+
+.mat-column-action {
+   text-align: center;
+   width: 200px;
+   padding-right: 16px !important;
 }
