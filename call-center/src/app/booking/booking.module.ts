@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
-
+import {MatTableModule} from '@angular/material/table';
 
 
 import { BookingRoutingModule } from './booking-routing.module';
@@ -27,8 +27,8 @@ import { StompService } from './stomp.service';
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBS6lGj7CsMDE5O9bMEf3I3anmfn34OBlA',
-    })
-
+    }),
+    MatTableModule
   ],
   providers: [
     ApiService,

@@ -1,19 +1,21 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { BookingService } from '../booking.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/user/user.service';
 import { TokenStorageService } from 'src/app/user/token-storage.service';
 import * as L from 'leaflet';
-import {NominatimService} from '../nominatim-service';
+import { NominatimService } from '../nominatim-service';
 import { NominatimResponse } from '../../shared/model/nominatim-response';
 import { StompService } from '../stomp.service';
+import { carRequest } from './../../shared/interface/car-request';
 
 
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
   bookingForm: FormGroup;
@@ -21,16 +23,16 @@ export class HomeComponent implements OnInit {
   callCenterID: any;
   errorMessage: string;
   wsData: Object;
-
+  dataSource: carRequest[] = [];
+  displayedColumns = [
+    'id',
+    'name',
+    'phone',
+    'address',
+  ];
   private map: L.Map;
-  private centroid: L.LatLngExpression = [10.762050,106.681830];
-
+  private centroid: L.LatLngExpression = [10.762050, 106.681830];
   searchResults: NominatimResponse[];
-
-  // latitude: number = 10.762050;
-  // longitude: number = 106.681830;
-  // zoom = 15;
-  // locationChosen = false;
 
   constructor(
     private bookingService: BookingService,
@@ -38,17 +40,24 @@ export class HomeComponent implements OnInit {
     private userService: UserService,
     private tokenStorage: TokenStorageService,
     private nominatimService: NominatimService,
-    private stompService: StompService
+    private stompService: StompService,
+    private changeDetection: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.getCallCenterID();
     this.createRequestForm();
     this.initMap();
-    // this.webSocketAPI._connect();          
-    // this.onNewValueReceive();
+    this.fetchData();
     this.stompService.subscribe('/locate', (): void => {
-      
+      this.fetchData();
+    });
+  }
+
+  private fetchData() {
+    this.bookingService.getCarRequest().subscribe(data => {
+      this.dataSource = data;
+      this.changeDetection.markForCheck();
     });
   }
 
@@ -58,7 +67,7 @@ export class HomeComponent implements OnInit {
       zoom: 15
     });
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,  
+      maxZoom: 19,
       minZoom: 10,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
@@ -66,18 +75,26 @@ export class HomeComponent implements OnInit {
   }
 
   addressLookup() {
-    // if (this.searchForm.get.length > 3) {
-    //   this.nominatimService.addressLookup(event.target.value).subscribe(results => {
-    //     this.searchResults = results;
-    //   });
-    // } else {
-    //   this.searchResults = [];
-    // }
     this.nominatimService.addressLookup(this.searchForm.controls['key'].value).subscribe(results => {
       this.searchResults = results;
       console.log(this.searchResults);
+      this.addMarker();
     });
   }
+
+  private addMarker() {
+    this.searchResults.forEach(result => {
+      const marker = new L.Marker([result.latitude, result.longitude])
+        .setIcon(
+          L.icon({
+            iconSize: [25, 41],
+            iconAnchor: [13, 41],
+            iconUrl: 'assets/img/marker-icon.png'
+          }));
+      marker.addTo(this.map);
+    });
+  }
+
 
   getCallCenterID() {
     this.userService.getUserByPhone(this.tokenStorage.getUser().phone).subscribe(
@@ -90,10 +107,10 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  createRequestForm(){
+  createRequestForm() {
     this.bookingForm = this.fb.group({
       callCenterId: [null],
-      customerName:  [null, Validators.required],
+      customerName: [null, Validators.required],
       customerPhone: [null, Validators.required],
       carType: ["", Validators.required],
       pickingAddress: [null, Validators.required],
@@ -108,18 +125,18 @@ export class HomeComponent implements OnInit {
   onSubmit(): void {
     this.bookingForm.patchValue({
       callCenterId: this.callCenterID
-    })
-    this.bookingService.postInfo(this.bookingForm.value).subscribe(
-      data => {
-        console.log(data);
+    });
+    this.bookingService.postInfo(this.bookingForm.value).subscribe({
+      complete: () => { 
         alert("Booking car successfully !!");
         this.bookingForm.reset();
+        console.log("Booking car successfully !!");
       },
-      err => {
+      error: err => {
         this.errorMessage = err.error.message;
+        console.log(err);
       }
-    );
+    });
   }
-
 
 }
