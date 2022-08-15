@@ -2,19 +2,24 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable ,  throwError } from 'rxjs';
+import { TokenStorageService } from 'src/app/user/token-storage.service';
 
 import { catchError } from 'rxjs/operators';
 
-const token = "Bearer "+ window.sessionStorage.getItem('auth-token')
-const headers = new HttpHeaders().set('AUTHORIZATION',token);
-
+let headers : HttpHeaders = new HttpHeaders();
 const API_URL = environment.api.url + '/api/v1';
 
 @Injectable()
 export class ApiService {
+  token = "Bearer "+ this.tokenStorage.getToken();
+  headers: HttpHeaders = new HttpHeaders().set('AUTHORIZATION',this.token);
+
   constructor(
     private http: HttpClient,
-  ) {}
+    private tokenStorage: TokenStorageService
+  ) {
+    headers = this.headers;
+  }
 
   private formatErrors(error: any) {
     return  throwError(error.error);

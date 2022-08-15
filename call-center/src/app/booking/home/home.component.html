@@ -72,11 +72,11 @@
                 </div>
             </div>
             <div class="card-body ">
-                <form class="form-inline mg-bottom-10" name="formSearch" [formGroup]="searchForm"
+                <form class="form-inline mg-bottom-10" name="formSearch" [formGroup]="searchForm" 
                     (ngSubmit)="addressLookup()">
                     <div class="input-group" style="width: 100%">
                         <input type="text" class="form-control" id="gmap_geocoding_address" placeholder="Address..."
-                            name="key" formControlName="key" required>
+                            name="key" formControlName="key">
                         <span class="input-group-btn">
                             <button class="btn blue" id="gmap_geocoding_btn" [disabled]="searchForm.invalid">
                                 <i class="fa fa-search"></i></button>
@@ -85,7 +85,31 @@
                 </form>
                 <div class="row">
                     <div class="col-md-3 col-sm-3">
-                        <header class="panel-heading panel-heading-red" style="text-align: center;">Search Result</header>
+                        <section class="example-container-search mat-elevation-z8" tabindex="0">
+                            <table id="searchTable" mat-table [dataSource]="searchResults" multiTemplateDataRows>
+                                <!-- Id Column -->
+                                <ng-container matColumnDef="searchResult">
+                                    <th mat-header-cell *matHeaderCellDef>Search Result </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.displayName}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="expandedDetail" >
+                                    <td mat-cell *matCellDef="let element" [attr.colspan]="searchColumns.length" >
+                                        <div class="example-element-detail"
+                                            [@detailExpand]="element == addressSelected ? 'expanded' : 'collapsed'">
+                                            <button (click)="setLatLngRequest()" type="button" class="btn btn-circle btn-success"  id="setAddressBtn" [disabled]="currentRequest === null">Set Address</button>
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="searchColumns"></tr>
+                                <tr mat-row class="example-element-row" *matRowDef="let row; columns: searchColumns;"
+                                    (click)="selectAddress(row)" [class.row-is-clicked]="addressSelected === row"
+                                    [class.example-expanded-row]="addressSelected === row"></tr>
+                                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
+                                    class="example-detail-row"></tr>
+                            </table>
+                        </section>
                     </div>
                     <div class="col-md-9 col-sm-9">
                         <div class="map-container">
@@ -112,7 +136,7 @@
             </div>
             <div class="card-body ">
                 <section class="example-container mat-elevation-z8" tabindex="0">
-                    <table mat-table [dataSource]="dataSource">
+                    <table id="carRequestTable" mat-table [dataSource]="dataSource">
                         <!-- Id Column -->
                         <ng-container matColumnDef="id">
                             <th mat-header-cell *matHeaderCellDef>ID </th>
@@ -141,26 +165,24 @@
                         <ng-container matColumnDef="action">
                             <th mat-header-cell *matHeaderCellDef> Action </th>
                             <td mat-cell *matCellDef="let element">
-                                <!-- <button  (click)="locateRequest(element.id)" [disabled]="isLocating(element.id)"  class="btn btn-primary"
-                                    style="background-color: #e91e63 !important;">Locate</button> -->
-                                    <div class="btn-group">
-                                        <button [disabled]="isLocating(element.id)"
-                                            class="btn btn-xs deepPink-bgcolor dropdown-toggle no-margin"
-                                            type="button" data-toggle="dropdown" aria-expanded="false">
-                                            Actions
-                                            <!-- <i class="fa fa-angle-down"></i> -->
-                                        </button>
-                                        <ul class="dropdown-menu pull-left" role="menu">
-                                            <li (click)="locateRequest(element.id)">
-                                                <a href="javascript:;" >
-                                                    <i class="icon-docs" ></i> Locate </a>
-                                            </li>
-                                            <li (click)="cancelLocateRequest()">
-                                                <a href="javascript:;">
-                                                    <i class="icon-tag"></i> Cancel </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                <div class="btn-group">
+                                    <button [disabled]="isLocating(element)"
+                                        class="btn btn-xs deepPink-bgcolor dropdown-toggle no-margin" type="button"
+                                        data-toggle="dropdown" aria-expanded="false">
+                                        Actions
+                                        <!-- <i class="fa fa-angle-down"></i> -->
+                                    </button>
+                                    <ul class="dropdown-menu pull-left" role="menu">
+                                        <li (click)="locateRequest(element)">
+                                            <a href="javascript:;">
+                                                <i class="icon-docs"></i> Locate </a>
+                                        </li>
+                                        <li (click)="cancelLocateRequest()">
+                                            <a href="javascript:;">
+                                                <i class="icon-tag"></i> Cancel </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
                         </ng-container>
 
@@ -168,7 +190,6 @@
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
                 </section>
-
             </div>
         </div>
     </div>

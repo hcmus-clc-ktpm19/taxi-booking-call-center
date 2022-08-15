@@ -8,22 +8,35 @@ import { NominatimService } from '../nominatim-service';
 import { NominatimResponse } from '../../shared/model/nominatim-response';
 import { StompService } from '../stomp.service';
 import { carRequest } from './../../shared/interface/car-request';
-
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
+  private map: L.Map;
+  private centroid: L.LatLngExpression = [10.762050, 106.681830];
   bookingForm: FormGroup;
   searchForm: FormGroup;
   callCenterID: any;
   errorMessage: string;
-  currentRequest = null;
+  currentRequest: carRequest | null = null;
+  searchColumns = ['searchResult'];
   dataSource: carRequest[] = [];
+  searchResults: NominatimResponse[];
+  addressSelected: NominatimResponse | null = null;
+  markerList : L.Marker [] = [];
   displayedColumns = [
     'id',
     'name',
@@ -31,9 +44,6 @@ export class HomeComponent implements OnInit {
     'address',
     'action'
   ];
-  private map: L.Map;
-  private centroid: L.LatLngExpression = [10.762050, 106.681830];
-  searchResults: NominatimResponse[];
 
   constructor(
     private bookingService: BookingService,
@@ -53,73 +63,104 @@ export class HomeComponent implements OnInit {
     this.stompService.subscribe('/locate', (): void => {
       this.fetchData();
     });
+    this.stompService.subscribe('/b', (): void => {
+      this.fetchData();
+    });
   }
 
-  private fetchData() {
+  fetchData() {
     this.bookingService.getCarRequest().subscribe(data => {
       this.dataSource = data;
       this.changeDetection.markForCheck();
     });
   }
 
-  private initMap() {
+  initMap() {
     this.map = L.map('map', {
       center: this.centroid,
       zoom: 15
     });
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      minZoom: 10,
+      minZoom: 5,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
     tiles.addTo(this.map);
   }
 
   addressLookup() {
+    this.markerList.forEach(marker => {
+      this.map.removeLayer(marker);
+    });
     this.nominatimService.addressLookup(this.searchForm.controls['key'].value).subscribe(results => {
       this.searchResults = results;
-      console.log(this.searchResults);
-      this.addMarker();
+      this.changeDetection.markForCheck();
     });
   }
 
-  private addMarker() {
-    this.searchResults.forEach(result => {
-      const marker = new L.Marker([result.latitude, result.longitude])
-        .setIcon(
-          L.icon({
-            iconSize: [25, 38],
-            iconAnchor: [13, 41],
-            iconUrl: 'assets/img/marker-icon.png'
-          }));
-      marker.addTo(this.map);
+  selectAddress(address: NominatimResponse) {
+    if (this.addressSelected === null || this.addressSelected.displayName !== address.displayName) {
+      this.addressSelected = address;
+      this.addMarker(address);
+      this.map.setView([address.latitude, address.longitude], 15);
+    } else {
+      this.addressSelected = null;
+    }
+  }
+
+  addMarker(address: NominatimResponse) {
+    const marker = new L.Marker([address.latitude, address.longitude])
+      .setIcon(
+        L.icon({
+          iconSize: [30, 40],
+          iconAnchor: [13, 41],
+          iconUrl: 'assets/img/marker-icon.png'
+        }));
+    marker.addTo(this.map);
+    this.markerList.push(marker);
+  }
+
+  setLatLngRequest() {
+    if (this.addressSelected !== null && this.currentRequest !== null) {
+      this.currentRequest.latPickingAddress = this.addressSelected.latitude;
+      this.currentRequest.lngPickingAddress = this.addressSelected.longitude;
+
+      this.bookingService.postInfo(this.currentRequest).subscribe({
+        complete: () => {
+          alert("Locating car successfully !!");
+          this.cancelLocateRequest();
+          // this.fetchData();
+        },
+        error: err => {
+          this.errorMessage = err.error.message;
+          alert("Something went wrong!!");
+          console.error(err);
+        }
+      });
+    }
+  }
+
+  locateRequest(request: carRequest) {
+    this.currentRequest = request;
+    this.searchForm.patchValue({
+      key: request.pickingAddress
     });
+    this.addressLookup();
+    this.changeDetection.markForCheck();
   }
 
-  locateRequest(id: any){
-    this.currentRequest = id;
-    // this.bookingService.locateRequest(id).subscribe({
-    //   complete: () => {
-    //     alert("Locating car successfully !!");
-    //     console.log("Locating car successfully !!");
-    //   },
-    //   error: err => {
-    //     this.errorMessage = err.error.message;
-    //     alert("Something went wrong!!");
-    //     console.log(err);
-    //   }
-    // });
-  }
-
-  cancelLocateRequest(){
+  cancelLocateRequest() {
     this.currentRequest = null;
+    this.searchForm.patchValue({
+      key: ""
+    });
+    this.searchResults = [];
+    this.changeDetection.markForCheck();
   }
 
-  isLocating(id: any): boolean {
-      return this.currentRequest !== id && this.currentRequest !== null;
+  isLocating(request: carRequest): boolean {
+    return this.currentRequest !== request && this.currentRequest !== null;
   }
-
-
 
   getCallCenterID() {
     this.userService.getUserByPhone(this.tokenStorage.getUser().phone).subscribe(
@@ -152,9 +193,10 @@ export class HomeComponent implements OnInit {
       callCenterId: this.callCenterID
     });
     this.bookingService.postInfo(this.bookingForm.value).subscribe({
-      complete: () => { 
+      complete: () => {
         alert("Booking car successfully !!");
-        this.bookingForm.reset();
+        this.createRequestForm();
+        this.cancelLocateRequest();
         console.log("Booking car successfully !!");
       },
       error: err => {

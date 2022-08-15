@@ -17,7 +17,6 @@ export class SigninComponent implements OnInit {
   };
   isLoggedIn = false;
   isLoginFailed = false;
-  errorMessage = '';
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
@@ -35,7 +34,7 @@ export class SigninComponent implements OnInit {
         this.router.navigate(['/booking']);
       },
       err => {
-        this.errorMessage = err.error.message;
+        alert("Login failed");
         this.isLoginFailed = true;
       }
     );

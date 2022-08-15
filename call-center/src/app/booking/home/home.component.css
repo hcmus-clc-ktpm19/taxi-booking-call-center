@@ -3,11 +3,11 @@
 }
 
 .map-frame {
-   height: 400px;
+   height: 500px;
 }
 
 #map {
-   height: 400px;
+   height: 500px;
 }
 
 .example-container {
@@ -25,7 +25,7 @@ tr {
    height: 40px;
 }
 
-tr:nth-child(even) {
+#carRequestTable tr:nth-child(even) {
    background-color: #F4F4F4;
 }
 
@@ -42,6 +42,10 @@ td.mat-cell {
    border-bottom: 1px solid #EFF2F7;
    border-right: 1px solid #EFF2F7;
    color: #303030;
+}
+
+#carRequestTable th.mat-header-cell {
+   font-size: small;
 }
 
 .mat-header-cell,
@@ -66,3 +70,80 @@ td.mat-cell {
    width: 200px;
    padding-right: 16px !important;
 }
+
+.example-container-search {
+   height: 500px;
+   width: 100%;
+   overflow: auto;
+}
+
+#searchTable .mat-table {
+   border-collapse: separate !important;
+   border-spacing:0 4px !important;
+}
+
+th.mat-column-searchResult {
+   text-align: center;
+   font-size: large;
+}
+
+td.mat-column-searchResult {
+   border-bottom: 1px solid #EFF2F7;
+}
+
+.row-is-clicked {
+   font-weight: bold;
+ }
+
+ tr.example-detail-row {
+   height: 0;
+ }
+ 
+ tr.example-element-row:not(.example-expanded-row):hover {
+   background: whitesmoke;
+ }
+ 
+ tr.example-element-row:not(.example-expanded-row):active {
+   background: #efefef;
+ }
+ 
+ .example-element-row td {
+   border-bottom-width: 0;
+ }
+ 
+ .example-element-detail {
+   overflow: hidden;
+   display: flex;
+   height: 55px;
+   justify-content: center;
+}
+ 
+ .example-element-diagram {
+   min-width: 80px;
+   border: 2px solid black;
+   padding: 8px;
+   font-weight: lighter;
+   margin: 8px 0;
+   height: 104px;
+ }
+ 
+ .example-element-symbol {
+   font-weight: bold;
+   font-size: 40px;
+   line-height: normal;
+ }
+ 
+ .example-element-description {
+   padding: 16px;
+ }
+ 
+ .example-element-description-attribution {
+   opacity: 0.5;
+ }
+
+ #setAddressBtn {
+   margin-top: 10px;
+   margin-bottom: 10px;
+   font-weight: 500;
+ }
+
