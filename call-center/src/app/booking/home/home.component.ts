@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
   searchForm: FormGroup;
   callCenterID: any;
   errorMessage: string;
+  suggestAddress = [];
   currentRequest: carRequest | null = null;
   searchColumns = ['searchResult'];
   dataSource: carRequest[] = [];
@@ -129,7 +130,6 @@ export class HomeComponent implements OnInit {
         complete: () => {
           alert("Locating car successfully !!");
           this.cancelLocateRequest();
-          // this.fetchData();
         },
         error: err => {
           this.errorMessage = err.error.message;
@@ -171,6 +171,15 @@ export class HomeComponent implements OnInit {
         this.errorMessage = err.error.message;
       }
     );
+  }
+
+  getSuggestAddress() {
+    let customerPhone = this.bookingForm.controls['customerPhone'].value !== null ? this.bookingForm.controls['customerPhone'].value : null;
+    customerPhone !== null && customerPhone !== ""? this.bookingService.getSuggestAddress(customerPhone).subscribe(
+      data => {
+        this.suggestAddress = data.addresses;
+      }
+    ) : this.suggestAddress = [];
   }
 
   createRequestForm() {

@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 
 
 const url = "/car-request/callcenter"
+const callcenterUrl = "/callcenter"
 
 
 @Injectable({
@@ -25,5 +26,9 @@ export class BookingService {
 
   getCarRequest(): Observable<carRequest[]> {
     return this.apiService.get(`${url}/locating`);
+  }
+
+  getSuggestAddress(phone: string): Observable<any> {
+    return this.apiService.get(`${callcenterUrl}/search-address?phone=${phone}`);
   }
 }
