@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
   bookingForm: FormGroup;
   searchForm: FormGroup;
   callCenterID: any;
+  role: string;
   errorMessage: string;
   suggestAddress = [];
   currentRequest: carRequest | null = null;
@@ -54,7 +55,9 @@ export class HomeComponent implements OnInit {
     private nominatimService: NominatimService,
     private stompService: StompService,
     private changeDetection: ChangeDetectorRef
-  ) { }
+  ) {
+    this.role = this.tokenStorage.getUser().role;
+  }
 
   ngOnInit(): void {
     this.getCallCenterID();
@@ -72,6 +75,10 @@ export class HomeComponent implements OnInit {
   fetchData() {
     this.bookingService.getCarRequest().subscribe(data => {
       this.dataSource = data;
+      this.changeDetection.markForCheck();
+    });
+    this.bookingService.getAllCarRequest().subscribe(data => {
+      console.log(data);
       this.changeDetection.markForCheck();
     });
   }

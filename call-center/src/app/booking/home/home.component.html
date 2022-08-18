@@ -48,11 +48,10 @@
                             <br>
                             <div class="input-group ">
                                 <input type="text" class="form-control " placeholder="Picking address"
-                                    name="pickingAddress" formControlName="pickingAddress" required list="addressList" (click)="getSuggestAddress()">
-                                <datalist id="addressList" >
-                                    
-                                        <option *ngFor="let address of suggestAddress" value={{address}}>
-                                    
+                                    name="pickingAddress" formControlName="pickingAddress" required list="addressList"
+                                    (click)="getSuggestAddress()">
+                                <datalist id="addressList">
+                                    <option *ngFor="let address of suggestAddress" value={{address}}>
                                 </datalist>
                             </div>
                             <br>

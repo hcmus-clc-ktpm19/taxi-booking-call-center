@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { TokenStorageService } from '../token-storage.service';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -10,22 +11,25 @@ import { Router } from '@angular/router';
   styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
-  form: any = {
-    phone: null,
-    password: null,
-    role: 'CALLCENTER'
-  };
+  loginForm: FormGroup;
   isLoggedIn = false;
   isLoginFailed = false;
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) { }
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router, private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.createRequestForm();
+  }
+
+  createRequestForm() {
+    this.loginForm = this.fb.group({
+      phone: [null, Validators.required, Validators.pattern('^[0-9]{10}$')],
+      password: [null, Validators.required],
+      role: ["", Validators.required]
+    });
   }
 
   onSubmit(): void {
-    const { phone, password, role } = this.form;
-
-    this.authService.login(phone, password, role).subscribe(
+    this.authService.login(this.loginForm.controls['phone'].value, this.loginForm.controls['password'].value, this.loginForm.controls['role'].value).subscribe(
       data => {
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);

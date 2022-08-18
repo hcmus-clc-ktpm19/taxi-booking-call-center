@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../shared/services/api.service';
 
 import { UserRoutingModule } from './user-routing.module';
@@ -14,7 +15,8 @@ import { SigninComponent } from './signin/signin.component';
   imports: [
     CommonModule,
     UserRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [ApiService]
 })

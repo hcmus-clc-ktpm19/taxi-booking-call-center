@@ -6,7 +6,7 @@ import { ApiService } from '../shared/services/api.service';
 import { map } from 'rxjs/operators';
 
 
-const url = "/car-request/callcenter"
+const url = "/car-request"
 const callcenterUrl = "/callcenter"
 
 
@@ -21,14 +21,18 @@ export class BookingService {
   ) { }
 
   postInfo(body: any): Observable<any> {
-    return this.apiService.post(`${url}/create-or-update`, body);
+    return this.apiService.post(`${url}/callcenter/create-or-update`, body);
   }
 
   getCarRequest(): Observable<carRequest[]> {
-    return this.apiService.get(`${url}/locating`);
+    return this.apiService.get(`${url}/callcenter/locating`);
   }
 
   getSuggestAddress(phone: string): Observable<any> {
     return this.apiService.get(`${callcenterUrl}/search-address?phone=${phone}`);
+  }
+
+  getAllCarRequest(): Observable<any> {
+    return this.apiService.get(`${url}/all`);
   }
 }
