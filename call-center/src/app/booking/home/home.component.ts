@@ -55,12 +55,11 @@ export class HomeComponent implements OnInit {
     private nominatimService: NominatimService,
     private stompService: StompService,
     private changeDetection: ChangeDetectorRef
-  ) {
-    this.role = this.tokenStorage.getUser().role;
-  }
+  ) { }
 
   ngOnInit(): void {
     this.getCallCenterID();
+    this.role = this.tokenStorage.getUser().role;
     this.createRequestForm();
     this.initMap();
     this.fetchData();

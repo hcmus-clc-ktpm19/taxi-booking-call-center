@@ -10,10 +10,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
+  role: string;
+  isLoggedIn = false;
+  username?: string;
 
   constructor(public router: Router, private tokenStorageService: TokenStorageService){}
 
   ngOnInit(): void {
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
+
+    if (this.isLoggedIn) {
+      const user = this.tokenStorageService.getUser();
+      this.role = user.role;
+      this.username = user.phone;
+    }
   }
 
   logout(): void {

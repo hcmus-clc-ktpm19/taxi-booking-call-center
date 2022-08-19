@@ -10,9 +10,7 @@ import { TokenStorageService } from './user/token-storage.service';
 })
 export class AppComponent implements OnInit {
   title = 'call-center';
-  private role: string;
   isLoggedIn = false;
-  username?: string;
 
   constructor(public router: Router, private tokenStorageService: TokenStorageService){}
 
@@ -20,10 +18,7 @@ export class AppComponent implements OnInit {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
 
     if (this.isLoggedIn) {
-      // const user = this.tokenStorageService.getUser();
-      // this.roles = user.roles;
-
-      // this.username = user.username;
+      this.router.navigate(['/booking']);
     }
   }
 }

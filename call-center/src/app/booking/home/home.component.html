@@ -5,7 +5,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="role === 'CALLCENTER'">
     <div class="col-md-12 col-sm-12">
         <div class="card card-box">
             <div class="card-head">
@@ -129,7 +129,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="role === 'LOCATORSTAFF'">
     <div class="col-md-12">
         <div class="card card-topline-lightblue">
             <div class="card-head">
