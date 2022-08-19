@@ -4,6 +4,7 @@ export interface carRequest {
     customerName: string;
     customerPhone: string;
     pickingAddress: string;
+    carType: string;
     latPickingAddress?: number;
     lngPickingAddress?: number;
 }
